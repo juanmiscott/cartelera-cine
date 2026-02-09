@@ -9,3 +9,323 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer base {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #f5f5f5;
+        min-height: 100vh;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+        margin: 0;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        font-family: "Montserrat", sans-serif;
+    }
+
+    button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        padding: 0;
+        font-family: "Montserrat", sans-serif;
+    }
+
+    img {
+        object-fit: cover;
+        width: 100%;
+    }
+}
+
+@layer components {
+
+    /* Admin Panel */
+    .admin-panel {
+        @apply max-w-7xl mx-auto p-5 flex flex-col gap-5;
+    }
+
+    .admin-panel__header {
+        @apply bg-white p-5 rounded-lg shadow;
+    }
+
+    .header__title h2 {
+        @apply text-2xl font-semibold;
+    }
+
+    .admin-panel__content {
+        @apply grid grid-cols-1 lg:grid-cols-3 gap-5;
+    }
+
+    .admin-panel__form {
+        @apply bg-white p-5 rounded-lg shadow lg:col-span-2;
+    }
+
+    .admin-panel__table {
+        @apply bg-white p-5 rounded-lg shadow lg:col-span-1;
+    }
+
+    /* Form Styles */
+    .form__body {
+        @apply flex flex-col gap-2.5;
+    }
+
+    .form__header {
+        @apply bg-white;
+    }
+
+    .form__header-box {
+        @apply flex justify-between items-center;
+    }
+
+    .tab {
+        @apply bg-blue-600 px-2.5 py-1 text-white h-8 cursor-pointer;
+    }
+
+    .tab button {
+        @apply text-white;
+    }
+
+    .tab.active {
+        @apply bg-blue-900;
+    }
+
+    .tabs {
+        @apply flex;
+    }
+
+    .tab-content {
+        @apply hidden;
+    }
+
+    .tab-content.active {
+        @apply grid grid-cols-1 gap-4;
+    }
+
+    .form__header-icons {
+        @apply flex gap-2.5 mr-1;
+    }
+
+    .clean-icon svg,
+    .save-icon svg {
+        @apply w-8 h-8;
+    }
+
+    .form-element {
+        @apply flex-1 flex flex-col gap-2.5 my-2.5;
+    }
+
+    .form-title {
+        @apply mb-2;
+    }
+
+    .form-title span {
+        @apply font-medium text-gray-700;
+    }
+
+    .form-element-input input {
+        @apply w-full px-2.5 py-2 rounded border-none text-white;
+        background: hsl(229, 66%, 80%);
+    }
+
+    .form-element-input input.error {
+        @apply border border-red-600;
+    }
+
+    .error-message {
+        @apply text-red-600 text-base mt-2;
+    }
+
+    /* Table Styles */
+    .table {
+        @apply flex flex-col flex-1 gap-2.5 rounded-lg;
+    }
+
+    .table__header {
+        @apply flex justify-start bg-white h-8;
+    }
+
+    .filter-button {
+        @apply ml-1 w-8 h-8;
+    }
+
+    .filter-button svg,
+    .edit-button svg,
+    .delete-button svg {
+        @apply w-8 h-8 fill-black;
+    }
+
+    .table__body {
+        @apply flex flex-col gap-2.5 w-11/12 mx-auto my-2.5 pr-2.5;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .table__body__element-box {
+        @apply bg-black text-white;
+    }
+
+    .element-box__data {
+        @apply p-4 bg-black;
+    }
+
+    .element-box__data li {
+        @apply mt-1;
+    }
+
+    .element-box__upper-row {
+        @apply flex justify-end items-center gap-2.5 bg-white;
+    }
+
+    .edit-button,
+    .delete-button {
+        @apply w-8 h-8;
+    }
+
+    .table__footer {
+        @apply flex justify-between items-center px-2.5 py-1 bg-white;
+    }
+
+    .table__footer-box {
+        @apply flex w-full justify-between items-center;
+    }
+
+    .table-page-info {
+        @apply text-left text-black;
+    }
+
+    .table-page-controls {
+        @apply flex items-center gap-1;
+    }
+
+    .table-page-button {
+        @apply cursor-pointer w-8 h-8 flex items-center justify-center transition-colors;
+    }
+
+    .table-page-button.disabled {
+        @apply cursor-not-allowed;
+    }
+
+    .table-page-button:hover {
+        @apply bg-gray-400 rounded-sm;
+    }
+
+    .table-page-button.disabled:hover {
+        @apply bg-transparent;
+    }
+
+    .table-page-button svg {
+        @apply w-8 h-8 fill-black;
+    }
+
+    .table-page-button.disabled svg {
+        @apply fill-gray-400;
+    }
+
+    /* Filter Modal Styles */
+    .overlay {
+        @apply bg-black/50 w-full h-full flex items-center justify-center fixed top-0 left-0 p-5 z-50 opacity-0 invisible transition-all duration-300;
+    }
+
+    .overlay.active {
+        @apply opacity-100 visible;
+    }
+
+    .modal {
+        @apply bg-purple-900 rounded-lg p-6 max-w-md w-full shadow-xl;
+    }
+
+    .title {
+        @apply text-xl font-semibold text-purple-200 mb-4;
+    }
+
+    .filter-form {
+        @apply mb-6;
+    }
+
+    .filter-form .form-title span {
+        @apply font-medium text-purple-100 text-sm;
+    }
+
+    .filter-form .form-element {
+        @apply mb-5;
+    }
+
+    .filter-form .form-title {
+        @apply mb-2;
+    }
+
+    .filter-form .form-element-input input {
+        @apply w-full px-4 py-3 border-2 border-gray-300 rounded-md text-sm transition-all bg-gray-50;
+    }
+
+    .filter-form .form-element-input input:focus {
+        @apply outline-none border-indigo-600 bg-white;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .filter-form .form-element-input input::placeholder {
+        @apply text-gray-400;
+    }
+
+    .filter-buttons {
+        @apply flex flex-col gap-3;
+    }
+
+    .filter-buttons button {
+        @apply w-full;
+    }
+
+    .cancel-button {
+        @apply bg-gray-300 text-gray-900 px-5 py-2.5 rounded-md font-medium;
+    }
+
+    .cancel-button:hover {
+        @apply bg-gray-400;
+    }
+
+    .apply-button {
+        @apply bg-indigo-600 text-white px-5 py-2.5 rounded-md font-medium transition-colors;
+    }
+
+    .apply-button:hover {
+        @apply bg-indigo-700;
+    }
+
+    .table-row {
+        @apply bg-white p-4 rounded-lg shadow mb-4;
+    }
+
+    .table-row__content {
+        @apply flex flex-col gap-2;
+    }
+
+    .table-row__content p {
+        @apply text-black;
+    }
+
+    .table-row__content p strong {
+        @apply text-black;
+    }
+
+}

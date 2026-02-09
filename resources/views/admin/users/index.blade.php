@@ -13,13 +13,13 @@
     <div class="admin-panel">
         <div class="admin-panel__header">
             <div class="header__title">
-                <h2>Usuarios</h2>
+                <h2>{{ __('admin/titles.users') }}</h2>
             </div>
         </div>
         
         <div class="admin-panel__content">
 
-                    <div class="admin-panel__table">
+            <div class="admin-panel__table">
                 <section class="table">
                     <div class="table__header">
                         <div class="table__header__box">
@@ -32,13 +32,22 @@
                         </div>
                     </div>
 
-                    <div class="table__body">
-                        <!-- Los elementos de la tabla se generarán dinámicamente -->
+                   <div class="table__body">
+                        @foreach($records as $record)
+                            <div class="table-row">
+                                <div class="table-row__content">
+                                    <p><strong>Nombre:</strong> {{ $record->name }}</p>
+                                    <p><strong>Email:</strong> {{ $record->email }}</p>
+                                    <p><strong>Creado:</strong> {{ $record->created_at->format('d/m/Y') }}</p>
+                                    <p><strong>Actualizado:</strong> {{ $record->updated_at->format('d/m/Y') }}</p>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
 
                     <div class="table__footer">
                         <div class="table__footer-box">
-                            <div class="table-page-info">0 registros en total, mostrando 0 por página</div>
+                            <div class="table-page-info">{{ $records->total() }} registros en total, mostrando {{ $records->perPage() }} por página</div>
                             <div class="table-page-controls">
                                 <button class="table-page-button first-page disabled" data-page="1" title="doble izquierda">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
