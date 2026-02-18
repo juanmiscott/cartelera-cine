@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,22 +13,23 @@ class UserController extends Controller
 {
   public function __construct(private User $user){}
  
-  public function index()
-  {
-    try{
-      $records = $this->user
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+ public function store(Request $request)
+{
+    $data = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'unique:users,email'],
+        'password' => ['required', 'confirmed', 'min:6'],
+    ]);
 
-      $view = View::make('admin.users.index')
-         ->with('records', $records);
+    $data['password'] = Hash::make($data['password']);
 
-      return $view;
-    }
-    catch(\Exception $e){
-     
-    }
-  }
+    $user = User::create($data);
+
+    return response()->json([
+        'message' => 'Usuario creado correctamente',
+        'data' => $user
+    ], 201);
+}
 
   public function create()
   {
@@ -44,38 +46,76 @@ class UserController extends Controller
 
   }
 
-  public function store(UserRequest $request)
-  {  
-    try{
-
-     $data = $request->validated();
-
-      unset($data['password_confirmation']);
-     
-      if (!$request->filled('password') && $request->filled('id')){
-        unset($data['password']);
-      }
-
-      $this->user->updateOrCreate([
-        'id' => $request->input('id')
-      ], $data);
-
-      return response()->json([
-        'message' => 'Usuario creado correctamente',
-      ], 201);
-    }catch(\Exception $e){
-      return response()->json([
-        'error' => $e->getMessage(),
-      ], 422);
-    }    
-  }
+  
 
   public function edit(User $user)
   {
     return response()->json([
-      'user' => $user,
+      'data' => $user,
     ], 200);
   }
+
+  public function index(Request $request)
+{
+    $query = User::query();
+
+    if ($request->filled('name')) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+
+    if ($request->filled('email')) {
+        $query->where('email', 'like', '%' . $request->email . '%');
+    }
+
+    $records = $query
+        ->orderBy('created_at', 'desc')
+        ->paginate(10)
+        ->withQueryString();
+
+    // ✅ Estructura para el componente de tabla
+    $tableStructure = [
+        'editRoute' => 'users_edit',
+        'fields' => [
+            ['key' => 'name', 'label' => 'Nombre'],
+            ['key' => 'email', 'label' => 'Email'],
+            ['key' => 'created_at', 'label' => 'Creado'],
+            ['key' => 'updated_at', 'label' => 'Actualizado'],
+        ],
+    ];
+
+    // ✅ Estructura para el componente de formulario
+    $formStructure = [
+        ['name' => 'name', 'label' => 'Nombre', 'type' => 'text'],
+        ['name' => 'email', 'label' => 'Email', 'type' => 'email'],
+        ['name' => 'password', 'label' => 'Contraseña', 'type' => 'password'],
+        ['name' => 'password_confirmation', 'label' => 'Confirmar contraseña', 'type' => 'password'],
+    ];
+
+    // ✅ Registro vacío para “crear”
+    $record = new User();
+
+    return View::make('admin.users.index', compact(
+        'records',
+        'tableStructure',
+        'formStructure',
+        'record'
+    ));
+}
+
+public function update(Request $request, User $user)
+{
+    $data = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+    ]);
+
+    $user->update($data);
+
+    return response()->json([
+        'message' => 'Usuario actualizado correctamente',
+        'user' => $user,
+    ], 200);
+}
 
   public function destroy(User $user)
   {
@@ -91,4 +131,6 @@ class UserController extends Controller
       ], 500);
     }
   }
+
+  
 }
