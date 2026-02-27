@@ -13,14 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const editBtn = event.target.closest('.edit-button');
         if (editBtn) {
             const endpoint = editBtn.dataset.endpoint;
-            console.log('[table.js] edit endpoint:', endpoint);
 
             const response = await fetch(endpoint, {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
 
             const result = await response.json();
-            document.dispatchEvent(new CustomEvent('showForm', { detail: { data: result.data } }));
+
+            document.dispatchEvent(new CustomEvent('showForm', {
+                detail: { data: result }
+            }));
             return;
         }
 

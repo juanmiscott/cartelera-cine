@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 
 class SeatController extends Controller
 {
-    public function __construct(private Seat $seat){}
+    public function __construct(private Seat $seat){
+        $this->middleware('auth');
+    }
 
     public function index(Request $request)
     {

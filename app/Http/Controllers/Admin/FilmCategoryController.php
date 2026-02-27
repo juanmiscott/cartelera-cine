@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 
 class FilmCategoriesController extends Controller
 {
-    public function __construct(private FilmCategories $filmCategories) {}
+    public function __construct(private FilmCategories $filmCategories) {
+        $this->middleware('auth');
+    }
 
     public function store(Request $request)
     {

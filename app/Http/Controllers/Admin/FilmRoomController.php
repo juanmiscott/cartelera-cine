@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 
 class FilmRoomController extends Controller
 {
-  public function __construct(private FilmRoom $filmRoom){}
+  public function __construct(private FilmRoom $filmRoom){
+    $this->middleware('auth');
+  }
  
  public function store(Request $request)
 {

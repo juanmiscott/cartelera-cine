@@ -11,6 +11,11 @@
         <div class="header__title">
             <h2>{{ $title }}</h2>
         </div>
+
+        <form method="GET" action="{{ route('logout') }}">
+            @csrf
+            <button class="logout-button" type="submit">Log-out</button>
+        </form>
     </div>
 
     <div class="admin-panel__content">
@@ -22,7 +27,7 @@
         <div class="admin-panel__form">
             {{ $form }}
         </div>
-
+     
     </div>
 
 </div>

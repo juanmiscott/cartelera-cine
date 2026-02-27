@@ -1,8 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin'], function () {
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+});
+
+Route::group(['prefix' => 'admin' , 'middleware' => 'auth'], function () { 
+  
+  Route::get('/panel-de-control', function () {
+      return view('admin.dashboard.index');
+  })->name('dashboard');
 
   Route::resource('usuarios', 'App\Http\Controllers\Admin\UserController', [
     'parameters' => [
@@ -31,6 +43,8 @@ Route::group(['prefix' => 'admin'], function () {
       'update' => 'movies_update',
     ]
   ]);
+  Route::get('/movies/{id}', [MovieController::class, 'show'])->name('movies.show');
+
 
   Route::resource('categorias', 'App\Http\Controllers\Admin\FilmCategoriesController', [
     'parameters' => [
@@ -47,18 +61,18 @@ Route::group(['prefix' => 'admin'], function () {
   ]);
 
   Route::resource('salas', 'App\Http\Controllers\Admin\RoomController', [
-  'parameters' => [
-    'salas' => 'room',
-  ],
-  'names' => [
-    'index' => 'rooms',
-    'create' => 'rooms_create',
-    'edit' => 'rooms_edit',
-    'store' => 'rooms_store',
-    'destroy' => 'rooms_destroy',
-    'update' => 'rooms_update',
-  ]
-]);
+    'parameters' => [
+      'salas' => 'room',
+    ],
+    'names' => [
+      'index' => 'rooms',
+      'create' => 'rooms_create',
+      'edit' => 'rooms_edit',
+      'store' => 'rooms_store',
+      'destroy' => 'rooms_destroy',
+      'update' => 'rooms_update',
+    ]
+  ]);
 
 
 
@@ -77,33 +91,53 @@ Route::group(['prefix' => 'admin'], function () {
   ]);
 
   Route::resource('tickets', 'App\Http\Controllers\Admin\TicketController', [
-  'parameters' => [
-    'tickets' => 'ticket',
-  ],
-  'names' => [
-    'index' => 'tickets',
-    'create' => 'tickets_create',
-    'edit' => 'tickets_edit',
-    'store' => 'tickets_store',
-    'destroy' => 'tickets_destroy',
-    'update' => 'tickets_update',
-  ]
-]);
+    'parameters' => [
+        'tickets' => 'ticket',
+    ],
+    'names' => [
+        'index' => 'tickets',
+        'create' => 'tickets_create',
+        'edit' => 'tickets_edit',
+        'store' => 'tickets_store',
+        'destroy' => 'tickets_destroy',
+        'update' => 'tickets_update',
+    ]
+  ]);
 
-Route::resource('sesiones', 'App\Http\Controllers\Admin\SessionController', [
-  'parameters' => [
-    'sesiones' => 'session',
-  ],
-  'names' => [
-    'index' => 'sessions',
-    'create' => 'sessions_create',
-    'edit' => 'sessions_edit',
-    'store' => 'sessions_store',
-    'destroy' => 'sessions_destroy',
-    'update' => 'sessions_update',
-  ]
-]);
-
-
-
+    Route::resource('sesiones', 'App\Http\Controllers\Admin\SessionController', [
+    'parameters' => [
+        'sesiones' => 'session',
+    ],
+    'names' => [
+        'index' => 'sessions',
+        'create' => 'sessions_create',
+        'edit' => 'sessions_edit',
+        'store' => 'sessions_store',
+        'destroy' => 'sessions_destroy',  
+        'update' => 'sessions_update',
+    ]
+  ]);
 });
+
+Route::group(['prefix' => 'cuenta' , 'middleware' => 'auth'], function () { 
+  Route::get('/panel-de-control', function () {
+      return view('customer.dashboard.index');
+  })->name('customer-dashboard');
+});
+
+
+Route::get('/', function () {
+    $movies = \App\Models\Movie::orderBy('release_date', 'desc')->get();
+    return view('public.home', compact('movies'));
+})->name('home');
+
+Route::get('/pelicula/{id}', function ($id) {
+    $movie = \App\Models\Movie::findOrFail($id);
+    return view('public.movie', compact('movie'));
+})->name('movie');
+
+
+
+require __DIR__.'/auth.php';
+require __DIR__.'/auth-customer.php';
+

@@ -11,16 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->id();
-            $table->integer('film_room_id');
-            $table->dateTime('date_time');
-            $table->decimal('price', 8, 2);
-            $table->string('language');
-            $table->timestamps();
+        Schema::table('movies_tables', function (Blueprint $table) {
+            //
         });
-
-        
     }
 
     /**
@@ -28,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sessions');
+        Schema::table('movies_tables', function (Blueprint $table) {
+            //
+        });
     }
 };

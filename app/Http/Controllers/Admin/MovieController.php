@@ -9,14 +9,16 @@ use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
-    public function __construct(private Movie $movie) {}
+    public function __construct(private Movie $movie) {
+        
+    }
 
     public function store(Request $request)
     {
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'film_category' => ['required', 'string', 'max:255'],
-            'duration' => ['required'], // si lo cambias a int: ['required','integer','min:1']
+            'duration' => ['required'], 
             'release_date' => ['required', 'date'],
             'date_time' => ['required', 'date'],
             'description' => ['required', 'string'],
@@ -132,4 +134,9 @@ public function index(Request $request)
             ], 500);
         }
     }
+
+    public function show($id) {
+    $movie = Movie::findOrFail($id);
+    return view('movies.show', compact('movie'));
+}
 }

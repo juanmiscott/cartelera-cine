@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
-    public function __construct(private Ticket $ticket){}
+    public function __construct(private Ticket $ticket){
+        $this->middleware('auth');
+    }
 
     public function index(Request $request)
     {

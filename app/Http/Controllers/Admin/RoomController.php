@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    public function __construct(private Room $room){}
+    public function __construct(private Room $room){
+        $this->middleware('auth');
+    }
 
     public function index(Request $request)
     {

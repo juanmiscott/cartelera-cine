@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\Session;
+use App\Models\FilmSession;
 use Illuminate\Http\Request;
 
-class SessionController extends Controller
+class FilmSessionController extends Controller
 {
-    public function __construct(private Session $session){}
+    public function __construct(private FilmSession $filmSession){
+        $this->middleware('auth');
+    }
 
     public function index(Request $request)
     {
@@ -37,11 +39,11 @@ class SessionController extends Controller
             'language' => ['required', 'string', 'max:255'],
         ]);
 
-        $session = Session::create($data);
+        $filmSession = FilmSession::create($data);
 
         return response()->json([
             'message' => 'Sesión creada correctamente',
-            'data' => $session
+            'data' => $filmSession
         ], 201);
     }
 
@@ -52,14 +54,14 @@ class SessionController extends Controller
         }
     }
 
-    public function edit(Session $session)
+    public function edit(FilmSession $filmSession)
     {
         return response()->json([
-            'data' => $session,
+            'data' => $filmSession,
         ], 200);
     }
 
-    public function update(Request $request, Session $session)
+    public function update(Request $request, FilmSession $filmSession)
     {
         $data = $request->validate([
             'film_room_id' => ['required', 'integer'],
@@ -68,17 +70,17 @@ class SessionController extends Controller
             'language' => ['required', 'string', 'max:255'],
         ]);
 
-        $session->update($data);
+        $filmSession->update($data);
 
         return response()->json([
             'message' => 'Sesión actualizada correctamente',
-            'data' => $session,
+            'data' => $filmSession,
         ], 200);
     }
 
-    public function destroy(Session $session)
+    public function destroy(FilmSession $filmSession)
     {
-        $session->delete();
+        $filmSession->delete();
 
         return response()->json([
             'message' => 'Sesión eliminada correctamente',

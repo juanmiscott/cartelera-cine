@@ -15,6 +15,7 @@ class Movie extends Model
     protected $fillable = [
         'title',
         'film_category',
+        'title_slug',
         'duration',
         'release_date',
         'date_time',
@@ -25,6 +26,14 @@ class Movie extends Model
         'release_date' => 'date',
         'date_time' => 'datetime',
     ];
+
+    protected static function boot()
+{
+    parent::boot();
+    static::saving(function ($movie) {
+        $movie->title_slug = \Illuminate\Support\Str::slug($movie->title);
+    });
+}
 
 public function rooms()
 {

@@ -72,10 +72,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function loadFormData (data) {
+        if (!data) {
+            console.error('[form.js] No data received');
+            return;
+        }
+
+
         form.reset();
+
         Object.entries(data).forEach(([key, value]) => {
-            const input = document.querySelector(`[name="${key}"]`);
-            if (input) input.value = value ?? '';
+            const input = form.querySelector(`[name="${key}"]`);
+            if (input) {
+                input.value = value ?? '';
+            }
         });
     }
 });

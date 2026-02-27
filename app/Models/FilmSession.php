@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\FilmRoom;
 
-class Session extends Model
+class FilmSession extends Model
 {
     use HasFactory;
 
