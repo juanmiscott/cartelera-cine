@@ -29,7 +29,7 @@
 
             <div class="actions">
                 <button type="button" class="cancel-button">Cancelar</button>
-                <button type="button" class="confirm-button">Subir</button>
+                <button type="button" class="confirm-button" disabled>Seleccionar</button>
             </div>
         </div>
     </div>

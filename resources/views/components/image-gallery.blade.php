@@ -17,5 +17,5 @@
 @endforeach
 
 @if($images->isEmpty())
-    <p class="image-modal__gallery-empty">No hay imagenes en la galeria.</p>
+    <p class="image-modal__gallery-empty">No hay imagenes en la galeria</p>
 @endif
