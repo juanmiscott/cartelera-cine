@@ -6,8 +6,10 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
-import './modal.js';
 import './table.js';
 import './form.js';
-import './filter-modal.js';
 import './delete-modal.js';
+import './sidebar.js';
+import './language.js';
+import './image-modal.js';
+

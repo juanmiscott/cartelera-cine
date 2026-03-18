@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\Room;
+use App\Models\MongoDB\Room;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller

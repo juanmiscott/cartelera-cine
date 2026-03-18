@@ -35,18 +35,43 @@
 
     <form>
       <div class="tab-content active" data-tab="general">
-        <input type="hidden" name="id">
+        <input type="hidden" name="id" value="{{ $record->id }}">
 
-        @foreach($formStructure as $field)
-          <div class="form-element">
-            <div class="form-title">
-              <span>{{ $field['label'] }}</span>
-            </div>
-            <div class="form-element-input">
-              <input type="{{ $field['type'] ?? 'text' }}" name="{{ $field['name'] }}">
-            </div>
+        <div class="form-element">
+          <div class="form-title">
+            <span>Nombre</span>
           </div>
-        @endforeach
+          <div class="form-element-input">
+            <input type="text" name="name" value="{{ $record->name }}">
+          </div>
+        </div>
+
+        <div class="form-element">
+          <div class="form-title">
+            <span>Email</span>
+          </div>
+          <div class="form-element-input">
+            <input type="email" name="email" value="{{ $record->email }}">
+          </div>
+        </div>
+
+        <div class="form-element">
+          <div class="form-title">
+            <span>Contraseña</span>
+          </div>
+          <div class="form-element-input">
+            <input type="password" name="password">
+          </div>
+        </div>
+
+        <div class="form-element">
+          <div class="form-title">
+            <span>Confirmar contraseña</span>
+          </div>
+          <div class="form-element-input">
+            <input type="password" name="password_confirmation">
+          </div>
+        </div>
 
       </div>
     </form>

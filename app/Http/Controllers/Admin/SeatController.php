@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\Seat;
+use App\Models\MongoDB\Seat;
 use Illuminate\Http\Request;
 
 class SeatController extends Controller

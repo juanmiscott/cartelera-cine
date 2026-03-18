@@ -17,6 +17,8 @@
 </head>
 <body style="font-family: Montserrat, sans-serif;">
 
+    
+
     <main style="flex:1;">
         {{ $slot }}
     </main>

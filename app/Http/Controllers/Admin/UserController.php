@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\MySQL\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\UserRequest;
 
@@ -33,13 +33,11 @@ class UserController extends Controller
 
             if (request()->ajax()) {
                 return response()->json([
-                    'table' => view('components.admin-table', ['tableStructure' => $this->user->getTableStructure(), 'records' => $users])->render(),
-                    'form'  => view('components.admin-form', ['formStructure' => $this->user->getFormStructure(), 'record' => $this->user])->render(),
+                    'table' => view('components.tables.user-admin-table', ['records' => $users])->render(),
+                    'form'  => view('components.forms.user-admin-form', ['record' => $this->user])->render(),
                 ], 200);
             } else {
                 $view = View::make('admin.users.index')
-                    ->with('tableStructure', $this->user->getTableStructure())
-                    ->with('formStructure', $this->user->getFormStructure())
                     ->with('records', $users)
                     ->with('record', $this->user);
                 return $view;
@@ -56,7 +54,7 @@ class UserController extends Controller
         try {
             if (request()->ajax()) {
                 return response()->json([
-                    'form' => view('components.admin-form', ['formStructure' => $this->user->getFormStructure(), 'record' => $this->user])->render(),
+                    'form' => view('components.forms.user-admin-form', ['record' => $this->user])->render(),
                 ], 200);
             }
         } catch (\Exception $e) {
@@ -95,8 +93,8 @@ class UserController extends Controller
                 : 'El usuario se creó correctamente';
 
             return response()->json([
-                'table'   => view('components.admin-table', ['tableStructure' => $this->user->getTableStructure(), 'records' => $users])->render(),
-                'form'    => view('components.admin-form', ['formStructure' => $this->user->getFormStructure(), 'record' => $this->user])->render(),
+                'table'   => view('components.tables.user-admin-table', [ 'records' => $users])->render(),
+                'form'    => view('components.forms.user-admin-form', ['record' => $this->user])->render(),
                 'message' => $message,
             ], 200);
 
@@ -108,15 +106,17 @@ class UserController extends Controller
     }
 
     public function edit(User $user)
-{
-    try {
-        return response()->json($user, 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'message' => \Lang::get('admin/notification.error'),
-        ], 500);
+    {
+        try {
+            return response()->json([
+                'form'    => view('components.forms.user-admin-form', [ 'record' => $user])->render()
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => \Lang::get('admin/notification.error'),
+            ], 500);
+        }
     }
-}
 
     public function destroy(User $user)
     {
@@ -130,8 +130,8 @@ class UserController extends Controller
             $message = \Lang::get('admin/notification.destroy');
 
             return response()->json([
-                'table'   => view('components.admin-table', ['tableStructure' => $this->user->getTableStructure(), 'records' => $users])->render(),
-                'form'    => view('components.admin-form', ['formStructure' => $this->user->getFormStructure(), 'record' => $this->user])->render(),
+                'table'   => view('components.tables.user-admin-table', ['records' => $users])->render(),
+                'form'    => view('components.forms.user-admin-form', ['record' => $this->user])->render(),
                 'message' => $message,
             ], 200);
 

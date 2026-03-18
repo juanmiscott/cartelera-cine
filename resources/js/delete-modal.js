@@ -1,28 +1,24 @@
-document.addEventListener('DOMContentLoaded', () => {
+import store from './redux/store';
+import { setForm, setTable } from './redux/crud-slice';
 
-    let deleteEndpoint = '';
+const deleteModal = document.getElementById('deleteModal');
 
-    const modal = document.getElementById('deleteModal');
-    if (!modal) return;
-
-    const cancelBtn = modal.querySelector('.cancel-button');
-    const confirmBtn = modal.querySelector('.confirm-button');
-
+if (deleteModal) {
     document.addEventListener('showDeleteModal', function (event) {
-        deleteEndpoint = event.detail.endpoint;
-        modal.classList.add('active');
+        deleteModal.dataset.endpoint = event.detail.endpoint;
+        deleteModal.classList.add('active');
     });
 
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-    }
+    deleteModal.addEventListener('click', async event => {
+        if (event.target.closest('.cancel-button')) {
+            deleteModal.classList.remove('active');
+        }
 
-    if (confirmBtn) {
-        confirmBtn.addEventListener('click', async () => {
+        if (event.target.closest('.confirm-button')) {
+            const endpoint = deleteModal.dataset.endpoint;
+
             try {
-                const response = await fetch(deleteEndpoint, {
+                const response = await fetch(endpoint, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -30,25 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                if (!response.ok) {
-                    throw new Error('Error al eliminar');
-                }
+                if (!response.ok) throw new Error();
 
-                modal.classList.remove('active');
-                window.location.reload();
+                deleteModal.classList.remove('active');
+
+                const data = await response.json();
+
+                store.dispatch(setTable(data.table));
+                store.dispatch(setForm(data.form));
 
             } catch (error) {
                 console.error(error);
-                alert('No se pudo eliminar el registro');
-                modal.classList.remove('active');
+                deleteModal.classList.remove('active');
             }
-        });
-    }
-
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.classList.remove('active');
         }
     });
-
-});
+}

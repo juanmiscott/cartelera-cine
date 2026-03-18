@@ -10,8 +10,13 @@ Route::middleware('auth')->group(function () {
     
 });
 
-Route::group(['prefix' => 'admin' , 'middleware' => 'auth'], function () { 
-  
+Route::group(['prefix' => 'admin' , 'middleware' => 'auth:web' ], function () { 
+
+  Route::post('/images', 'App\Http\Controllers\Admin\ImageController@store')->name('images_store');
+  Route::get('/images/thumb/{filename}', 'App\Http\Controllers\Admin\ImageController@showThumb')->name('images_thumb');
+  Route::delete('/images/{filename}', 'App\Http\Controllers\Admin\ImageController@destroy')->name('images_destroy');
+  Route::get('/images-gallery-refresh', 'App\Http\Controllers\Admin\ImageController@refreshGallery')->name('images_refresh'); 
+   
   Route::get('/panel-de-control', function () {
       return view('admin.dashboard.index');
   })->name('dashboard');
@@ -43,12 +48,10 @@ Route::group(['prefix' => 'admin' , 'middleware' => 'auth'], function () {
       'update' => 'movies_update',
     ]
   ]);
-  Route::get('/movies/{id}', [MovieController::class, 'show'])->name('movies.show');
 
-
-  Route::resource('categorias', 'App\Http\Controllers\Admin\FilmCategoriesController', [
+  Route::resource('categorias', 'App\Http\Controllers\Admin\FilmCategoryController', [
     'parameters' => [
-      'categorias' => 'filmCategories',
+      'categorias' => 'film_category',
     ],
     'names' => [
       'index' => 'film_categories',
@@ -103,40 +106,25 @@ Route::group(['prefix' => 'admin' , 'middleware' => 'auth'], function () {
         'update' => 'tickets_update',
     ]
   ]);
-
-    Route::resource('sesiones', 'App\Http\Controllers\Admin\SessionController', [
-    'parameters' => [
-        'sesiones' => 'session',
-    ],
-    'names' => [
-        'index' => 'sessions',
-        'create' => 'sessions_create',
-        'edit' => 'sessions_edit',
-        'store' => 'sessions_store',
-        'destroy' => 'sessions_destroy',  
-        'update' => 'sessions_update',
-    ]
-  ]);
 });
 
-Route::group(['prefix' => 'cuenta' , 'middleware' => 'auth'], function () { 
+Route::group(['prefix' => 'cuenta' , 'middleware' => 'auth:customer'], function () { 
   Route::get('/panel-de-control', function () {
       return view('customer.dashboard.index');
   })->name('customer-dashboard');
 });
 
+Route::group(['middleware' => 'getSitemap'], function () {
+  Route::get('/es', 'App\Http\Controllers\Public\HomeController@index')->name('es.home');
+  Route::get('/es/peliculas/{title}', 'App\Http\Controllers\Public\MovieController@show')->name('es.movie');
 
-Route::get('/', function () {
-    $movies = \App\Models\Movie::orderBy('release_date', 'desc')->get();
-    return view('public.home', compact('movies'));
-})->name('home');
+  Route::get('/en', 'App\Http\Controllers\Public\HomeController@index')->name('en.home');
+  Route::get('/en/movies/{title}', 'App\Http\Controllers\Public\MovieController@show')->name('en.movie');
+});
 
-Route::get('/pelicula/{id}', function ($id) {
-    $movie = \App\Models\Movie::findOrFail($id);
-    return view('public.movie', compact('movie'));
-})->name('movie');
+Route::post('/language', 'App\Http\Controllers\Public\LanguageController@changeLanguage')->name('language.change');
 
-
+Route::get('/', function () {})->middleware('setLocale');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/auth-customer.php';

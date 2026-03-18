@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\MySQL;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 
-class Customer extends Authenticatable
+class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -46,29 +46,5 @@ class Customer extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function getTableStructure()
-    {
-    return [
-        'editRoute' => 'users_edit',
-        'fields' => [
-            ['key' => 'name', 'label' => 'Nombre'],
-            ['key' => 'email', 'label' => 'Email'],
-            ['key' => 'created_at', 'label' => 'Creado'],
-            ['key' => 'updated_at', 'label' => 'Actualizado'],
-        ],
-    ];
-    }
-
-    public function getFormStructure()
-    {
-    return [
-        ['name' => 'id', 'label' => '', 'type' => 'hidden'],
-        ['name' => 'name', 'label' => 'Nombre', 'type' => 'text'],
-        ['name' => 'email', 'label' => 'Email', 'type' => 'email'],
-        ['name' => 'password', 'label' => 'Contraseña', 'type' => 'password'],
-        ['name' => 'password_confirmation', 'label' => 'Confirmar contraseña', 'type' => 'password'],
-    ];
-    }
-    
 }
+

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Cartelera</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,98 +13,63 @@
 <body>
 
 <div class="cartelera-page">
-
+   
     <div class="cartelera-header">
         <h2 class="cartelera-header__title">Cartelera</h2>
         <div class="cartelera-header__breadcrumb">
-            <form method="GET" action="{{ route('login') }}">
+
+            <x-language/>
+
+            <form method="GET" action="{{ route('customer-login') }}">
                 @csrf
                 <button class="logout-button" type="submit">Login</button>
             </form>
+
+            <button class="menu-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <title>menu</title>
+                <path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+            </svg>
+        </button>
+
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar__header">
+                <span>Menu</span>
+                <button class="sidebar__close" id="sidebarClose">&times;</button>
+            </div>
+            <nav class="sidebar__nav">
+                <a href="{{ url('/') }}" class="sidebar__link">
+                    Cartelera
+                </a>
+                <a href="{{ route('dashboard') }}" class="sidebar__link">
+                    Dashboard
+                </a>
+                <a href="{{ route('users') }}" class="sidebar__link">
+                    Panel Usuarios
+                </a>
+                <a href="{{ route('movies') }}" class="sidebar__link">
+                    Panel Peliculas
+                </a>
+                <a href="{{ route('film_categories') }}" class="sidebar__link">
+                    Panel Categorias
+                </a>
+            </nav>
+        </div>
         </div>
     </div>
 
     <div class="cartelera-grid">
-        <a href="{{ route('movie', 1) }}" class="movie-card">
-            <div class="movie-card">
-                <div class="movie-card__badge">ESTRENO</div>
-                <img src="https://cdng.europosters.eu/pod_public/1300/266365.jpg" alt="Pelicula 1" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 2) }}">
-            <div class="movie-card">
-                <div class="movie-card__badge">ESTRENO</div>
-                <img src="https://es.web.img2.acsta.net/pictures/14/05/28/11/24/435900.jpg" alt="Pelicula 2" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 3) }}">
-            <div class="movie-card">
-                <div class="movie-card__badge">ESTRENO</div>
-                <img src="https://play-lh.googleusercontent.com/KwzNgJyWxNq1MdbF7osx30Hcn4iUf245bW0a78mpZlYUwTn4yMZNuP9r_oAhxyd8zOHlXg=w240-h480-rw" alt="Pelicula 3" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 4) }}">
-            <div class="movie-card">
-                <div class="movie-card__badge">ESTRENO</div>
-                <img src="https://m.media-amazon.com/images/M/MV5BMGVkMGUwZDctNTMwZS00YzIwLWIxY2UtOGZjZjY4ZGMxYzg0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Pelicula 4" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 5) }}">
-            <div class="movie-card">
-                <div class="movie-card__badge">ESTRENO</div>
-                <img src="https://www.tuposter.com/pub/media/catalog/product/cache/71d04d62b2100522587d43c930e8a36b/m/e/medianoche_en_par_s_poster.png" alt="Pelicula 12" class="movie-card__img" alt="Pelicula 5" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 6) }}">
-            <div class="movie-card">
-                <div class="movie-card__badge">ESTRENO</div>
-                <img src="https://m.media-amazon.com/images/M/MV5BYzM0MDI3MjQtZTc0MC00YzNlLWExYjUtNjFlOTg3NmI5ZWUyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Pelicula 6" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 7) }}">
-            <div class="movie-card">
-                <img src="https://preview.redd.it/new-f1-the-movie-poster-v0-afpqwbimoc0f1.jpeg?auto=webp&s=ab9894cd8f5b0d93f234c695c4ea45bbcf4b94a8" alt="Pelicula 7" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 8) }}">
-            <div class="movie-card">
-                <img src="https://www.nochedecine.com/wp-content/uploads/2013/09/nt_13_prisioneros.jpg" alt="Pelicula 8" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 9) }}">
-            <div class="movie-card">
-                <img src="https://static.posters.cz/image/1300/122134.jpg" alt="Pelicula 9" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 10) }}">
-            <div class="movie-card">
-                <img src="https://static.posters.cz/image/750/81805.jpg" alt="Pelicula 10" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 11) }}">
-            <div class="movie-card">
-                <img src="https://i.ebayimg.com/00/s/MTU5OVgxMDc2/z/SxcAAOSwUCdnEI0F/$_57.JPG?set_id=880000500F" alt="Pelicula 11" class="movie-card__img" />
-            </div>
-        </a>
-
-        <a href="{{ route('movies.show', 12) }}">
-            <div class="movie-card">
-                <img src="https://image.tmdb.org/t/p/original/iLMtX4MGl8WjKCPfMgCdDuceOth.jpg" alt="Pelicula 12" class="movie-card__img" />
-            </div>
-        </a>
-
+        @foreach ($movies as $movie)
+            <a href="{{ route(App::getLocale() . '.movie', $movie->locale[App::getLocale()]['title']) }}" class="movie-card">
+                <div class="movie-card">
+                    <div class="movie-card__badge">ESTRENO</div>
+                    <img src="https://cdng.europosters.eu/pod_public/1300/266365.jpg" alt="{{ $movie->title }}" class="movie-card__img" />
+                </div>
+            </a>
+        @endforeach
     </div>
 </div>
 
 </body>
 </html>
+

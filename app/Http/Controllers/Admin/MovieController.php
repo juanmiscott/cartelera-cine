@@ -4,39 +4,43 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\Movie;
+use App\Models\MongoDB\Movie;
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\MovieRequest;
+use App\Services\SitemapService;
 
 class MovieController extends Controller
 {
-    public function __construct(private Movie $movie) {
-        
-    }
+    public function __construct(private Movie $movie, private SitemapService $sitemapService) {}
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'film_category' => ['required', 'string', 'max:255'],
-            'duration' => ['required'], 
-            'release_date' => ['required', 'date'],
-            'date_time' => ['required', 'date'],
-            'description' => ['required', 'string'],
-        ]);
-
-        $movie = Movie::create($data);
-
-        return response()->json([
-            'message' => 'Película creada correctamente',
-            'data' => $movie
-        ], 201);
-    }
-
-    public function create()
+    public function index(Request $request)
     {
         try {
+            $query = Movie::query();
+
+            if ($request->filled('title')) {
+                $query->where('title', 'like', '%' . $request->title . '%');
+            }
+
+            if ($request->filled('film_category')) {
+                $query->where('film_category', 'like', '%' . $request->film_category . '%');
+            }
+            
+
+            $movies = $query
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
+
             if (request()->ajax()) {
-                return response()->json([], 200);
+                return response()->json([
+                    'table' => view('components.tables.movie-admin-table', ['records' => $movies])->render(),
+                    'form'  => view('components.forms.movie-admin-form', ['record' => $this->movie])->render(),
+                ], 200);
+            } else {
+                return View::make('admin.movies.index')
+                    ->with('records', $movies)
+                    ->with('record', $this->movie);
             }
         } catch (\Exception $e) {
             return response()->json([
@@ -45,79 +49,72 @@ class MovieController extends Controller
         }
     }
 
-    
+    public function create()
+    {
+        try {
+            if (request()->ajax()) {
+                return response()->json([
+                    'form' => view('components.forms.movie-admin-form', ['record' => $this->movie])->render(),
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => \Lang::get('admin/notification.error'),
+            ], 500);
+        }
+    }
+
+    public function store(MovieRequest $request)
+    {
+        try {
+
+            $data = $request->validated();
+
+            $movie = $this->movie->updateOrCreate(
+                ['_id' => $request->input('id')],
+                $data
+            );
+
+            foreach ($movie->locale as $language => $fields) {
+                $slugs = [
+                    'title' => $fields['title']
+                ];
+
+                $this->sitemapService->updateOrCreateSlug('movies', $movie->_id, $language, 'movie', $slugs);
+            }
+
+            $movies = $this->movie
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+
+            $message = $request->filled('id')
+                ? 'La película se actualizó correctamente'
+                : 'La película se creó correctamente';
+
+            return response()->json([
+                'table'   => view('components.tables.movie-admin-table', ['records' => $movies])->render(),
+                'form'    => view('components.forms.movie-admin-form', ['record' => $this->movie])->render(),
+                'message' => $message,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 
     public function edit(Movie $movie)
     {
-        return response()->json([
-            'data' => $movie,
-        ], 200);
-    }
-
-public function index(Request $request)
-{
-    $query = Movie::query();
-
-    if ($request->filled('title')) {
-        $query->where('title', 'like', '%' . $request->title . '%');
-    }
-
-    if ($request->filled('film_category')) {
-        $query->where('film_category', 'like', '%' . $request->film_category . '%');
-    }
-
-    $records = $query
-        ->orderBy('created_at', 'desc')
-        ->paginate(10)
-        ->withQueryString();
-
-    $tableStructure = [
-        'editRoute' => 'movies_edit',
-        'fields' => [
-            ['key' => 'title', 'label' => 'Título'],
-            ['key' => 'film_category', 'label' => 'Categoría'],
-            ['key' => 'duration', 'label' => 'Duración'],
-            ['key' => 'release_date', 'label' => 'Estreno'],
-        ],
-    ];
-
-    $formStructure = [
-        ['name' => 'title', 'label' => 'Título', 'type' => 'text'],
-        ['name' => 'film_category', 'label' => 'Categoría', 'type' => 'text'],
-        ['name' => 'duration', 'label' => 'Duración', 'type' => 'text'],
-        ['name' => 'release_date', 'label' => 'Fecha estreno', 'type' => 'date'],
-        ['name' => 'date_time', 'label' => 'Fecha/Hora', 'type' => 'datetime-local'],
-        ['name' => 'description', 'label' => 'Descripción', 'type' => 'text'],
-    ];
-
-    $record = new Movie();
-
-    return View::make('admin.movies.index', compact(
-        'records',
-        'tableStructure',
-        'formStructure',
-        'record'
-    ));
-}
-
-
-    public function update(Request $request, Movie $movie)
-    {
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'film_category' => ['required', 'string', 'max:255'],
-            'duration' => ['required'],
-            'release_date' => ['required', 'date'],
-            'date_time' => ['required', 'date'],
-            'description' => ['required', 'string'],
-        ]);
-
-        $movie->update($data);
-
-        return response()->json([
-            'message' => 'Película actualizada correctamente',
-            'data' => $movie,
-        ], 200);
+        try {
+            return response()->json([
+                'form' => view('components.forms.movie-admin-form', ['record' => $movie])->render(),
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => \Lang::get('admin/notification.error'),
+            ], 500);
+        }
     }
 
     public function destroy(Movie $movie)
@@ -125,18 +122,24 @@ public function index(Request $request)
         try {
             $movie->delete();
 
+            $this->sitemapService->deleteSlug('movies', $movie->id);
+
+            $movies = $this->movie
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+
+            $message = \Lang::get('admin/notification.destroy');
+
             return response()->json([
-                'message' => 'Película eliminada correctamente',
+                'table'   => view('components.tables.movie-admin-table', ['records' => $movies])->render(),
+                'form'    => view('components.forms.movie-admin-form', ['record' => $this->movie])->render(),
+                'message' => $message,
             ], 200);
+
         } catch (\Exception $e) {
             return response()->json([
-                'error' => $e->getMessage(),
+                'message' => \Lang::get('admin/notification.error'),
             ], 500);
         }
     }
-
-    public function show($id) {
-    $movie = Movie::findOrFail($id);
-    return view('movies.show', compact('movie'));
-}
 }

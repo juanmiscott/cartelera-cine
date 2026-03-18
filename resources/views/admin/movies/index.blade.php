@@ -1,13 +1,14 @@
 <x-crud title="Películas"
-    :storeUrl="route('movies_store')"
-    :updateUrl="route('movies_update', '__ID__')"
-    :deleteUrl="route('movies_destroy', '__ID__')"
+  :indexUrl="route('movies')"
+  :storeUrl="route('movies_store')"
+  :deleteUrl="route('movies_destroy', '__ID__')"
+  :createUrl="route('movies_create')"
 >
   <x-slot name="table">
-    <x-admin-table :tableStructure="$tableStructure" :records="$records" />
+    <x-tables.movie-admin-table :records="$records" />
   </x-slot>
 
   <x-slot name="form">
-    <x-admin-form :formStructure="$formStructure" :record="$record" />
+    <x-forms.movie-admin-form :record="$record" />
   </x-slot>
 </x-crud>

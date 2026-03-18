@@ -12,7 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         
-        //
+        $middleware->alias([
+            'auth' => \App\Http\Middleware\Authenticate::class,
+            'setLocale' => \App\Http\Middleware\SetLocale::class,
+            'getSitemap' => \App\Http\Middleware\GetSitemap::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

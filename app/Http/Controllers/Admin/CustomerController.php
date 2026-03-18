@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
+use App\Models\MySQL\Customer;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\CustomerRequest;
 

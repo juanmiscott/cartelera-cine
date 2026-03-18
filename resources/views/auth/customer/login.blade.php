@@ -1,3 +1,3 @@
 <x-layouts.auth>
-    <x-login></x-login>
+    <x-customer-login></x-customer-login>
 </x-layouts.auth>
