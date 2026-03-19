@@ -22,6 +22,25 @@ if (formContainer) {
 
             const form = document.querySelector('.form form');
             const formData = new FormData(form);
+
+            const images = [];
+            const uploadImageContainers = document.querySelectorAll('.upload-image-container');
+
+            uploadImageContainers.forEach(container => {
+                const img = container.querySelector('img');
+                if (img && img.getAttribute('src')) {
+                    images.push({
+                        name: container.dataset.name,
+                        languageAlias: container.dataset.language,
+                        imageConfigurations: JSON.parse(container.dataset.configuration || '{}'),
+                        filename: img.getAttribute('src').split('/').pop(),
+                        alt: img.getAttribute('alt'),
+                        title: img.getAttribute('title')
+                    });
+                }
+            });
+
+            formData.append('images', JSON.stringify(images));
             let endpoint = panel.dataset.storeUrl;
 
             try {

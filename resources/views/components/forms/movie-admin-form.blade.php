@@ -103,19 +103,24 @@
       </div>
 
 
-      <div class="tab-content" data-tab="imagenes">
-        <div class="form-element" style="display: flex; justify-content: center; padding: 40px 0;">
-          <div class="form-element-input">
-            <button type="button" class="image-button image-button--large">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-              </svg>
-              <span>Subir Imagen</span>
+<div class="tab-content" data-tab="imagenes">
+    <div class="form-element">
+        <div class="form-title"><span>Galería de la Película</span></div>
+        
+        <div class="image-grid-peli" id="peli-image-grid">
+            
+            <button type="button" class="image-button add-image-card">
+                <div class="add-image-content">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                    </svg>
+                    <span>Añadir Imagen</span>
+                </div>
             </button>
-          </div>
-        </div>
-      </div>
 
+            </div>
+    </div>
+</div>
     </form>
   </div>
 

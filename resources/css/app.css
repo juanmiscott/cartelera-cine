@@ -1597,3 +1597,137 @@ img {
     filter: grayscale(0.5);
     pointer-events: none;
 }
+
+.upload-image-container {
+    position: relative;
+    width: 200px;
+}
+
+.upload-image.hidden {
+    display: none;
+}
+
+.upload-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+}
+
+.delete-button-preview {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-button.hidden {
+    display: none;
+}
+
+
+
+.image-grid-peli {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.add-image-card {
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    /* Borde suave */
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* El efecto 'medio negro' */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.add-image-card:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Se oscurece más al pasar el mouse */
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.add-image-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: white;
+}
+
+.add-image-content svg {
+    width: 35px;
+    height: 35px;
+    fill: white;
+    opacity: 0.8;
+}
+
+.add-image-content span {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.add-image-card svg {
+    width: 40px;
+    height: 40px;
+    fill: currentColor;
+}
+
+.add-image-card span {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.upload-image-container {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.upload-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+.delete-button-preview {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #e05c6a;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}

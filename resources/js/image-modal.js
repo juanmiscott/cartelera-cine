@@ -6,11 +6,11 @@ if (imageModal) {
     const preview = imageModal.querySelector('#imagePreview');
     const confirmBtn = imageModal.querySelector('.confirm-button');
 
+    let currentUploadContainer = null;
+
     function updateConfirmButton () {
         if (!gallery || !confirmBtn) return;
-
         const selectedItem = gallery.querySelector('.image-modal__gallery-item.selected');
-
         if (selectedItem) {
             confirmBtn.removeAttribute('disabled');
             confirmBtn.style.opacity = "1";
@@ -23,7 +23,9 @@ if (imageModal) {
     }
 
     document.addEventListener('click', e => {
-        if (e.target.closest('.image-button')) {
+        const btn = e.target.closest('.image-button');
+        if (btn) {
+            currentUploadContainer = btn.closest('.upload-image-container');
             imageModal.classList.add('active');
             updateConfirmButton();
         }
@@ -32,7 +34,6 @@ if (imageModal) {
     fileInput?.addEventListener('change', async (event) => {
         const file = event.target.files[0];
         if (!file) return;
-
         const formData = new FormData();
         formData.append('image', file);
 
@@ -45,7 +46,6 @@ if (imageModal) {
                 },
                 body: formData
             });
-
             const data = await response.json();
             if (response.ok) {
                 gallery.innerHTML = data.imageGallery;
@@ -57,18 +57,20 @@ if (imageModal) {
         }
     });
 
+    const grid = document.getElementById('peli-image-grid');
+
     imageModal.addEventListener('click', async e => {
         const target = e.target;
 
         if (target === imageModal || target.closest('.cancel-button')) {
             imageModal.classList.remove('active');
+            currentUploadContainer = null;
             return;
         }
 
         const tab = target.closest('.image-modal__tab');
         if (tab) {
             const mode = tab.dataset.modalTab;
-
             if (mode === 'gallery') {
                 gallery.innerHTML = '<p class="image-modal__gallery-empty">Cargando...</p>';
                 try {
@@ -78,13 +80,9 @@ if (imageModal) {
                         gallery.innerHTML = data.imageGallery;
                         updateConfirmButton();
                     }
-                } catch (error) {
-                    console.error("Error cargando galería");
-                }
+                } catch (error) { console.error("Error"); }
             }
-
-            imageModal.querySelectorAll('.image-modal__tab, .image-modal__tab-content')
-                .forEach(el => el.classList.remove('active'));
+            imageModal.querySelectorAll('.image-modal__tab, .image-modal__tab-content').forEach(el => el.classList.remove('active'));
             tab.classList.add('active');
             imageModal.querySelector(`.image-modal__tab-content[data-modal-tab="${mode}"]`).classList.add('active');
             return;
@@ -102,33 +100,53 @@ if (imageModal) {
         if (deleteBtn) {
             e.stopPropagation();
             if (!confirm('¿Deseas eliminar la imagen?')) return;
-
             try {
                 const response = await fetch(deleteBtn.dataset.endpoint, {
                     method: 'DELETE',
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
+                    headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
                 });
                 const data = await response.json();
                 if (response.ok) {
                     gallery.innerHTML = data.imageGallery;
                     updateConfirmButton();
                 }
-            } catch (error) {
-                console.error("Error al borrar");
-            }
+            } catch (error) { console.error("Error al borrar"); }
             return;
         }
 
         if (target.closest('.confirm-button')) {
             const selectedItem = gallery.querySelector('.image-modal__gallery-item.selected');
-            if (selectedItem) {
-                const filename = selectedItem.dataset.filename;
-                console.log("Has elegido:", filename);
+            const grid = document.getElementById('peli-image-grid');
+
+            if (selectedItem && grid) {
+                const src = selectedItem.querySelector('img').src;
+                const title = document.getElementById('modal-img-title')?.value || '';
+                const alt = document.getElementById('modal-img-alt')?.value || '';
+
+                const newImage = document.createElement('div');
+                newImage.className = 'upload-image-container';
+
+                newImage.dataset.name = "gallery";
+                newImage.dataset.language = "es";
+                newImage.dataset.configuration = JSON.stringify({ width: 800, height: 600 });
+
+                newImage.innerHTML = `
+            <img src="${src}" alt="${alt}" title="${title}">
+            <button type="button" class="delete-button-preview">
+                <svg viewBox="0 0 24 24" style="width: 16px; fill: white;"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+            </button>
+        `;
+
+                grid.appendChild(newImage);
+
                 imageModal.classList.remove('active');
             }
         }
+
+        document.addEventListener('click', e => {
+            if (e.target.closest('.delete-button-preview')) {
+                e.target.closest('.upload-image-container').remove();
+            }
+        });
     });
 }
