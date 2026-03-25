@@ -1,0 +1,138 @@
+.table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    border-radius: 0.5rem;
+}
+
+.table__header {
+    display: flex;
+    justify-content: flex-start;
+    height: 2rem;
+    background-color: #ce5454;
+}
+
+.table__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    width: 91.666667%;
+    margin: 0.625rem auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 0.625rem;
+}
+
+.table__body__element-box,
+.element-box__data {
+    background-color: #000;
+    color: #fff;
+    padding: 1rem;
+}
+
+.element-box__data li {
+    margin-top: 0.25rem;
+}
+
+.table-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.625rem;
+}
+
+.element-box__upper-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.625rem;
+    background-color: #944d4d;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.2rem;
+}
+
+.table-row__content {
+    background-color: #fffdfd;
+    color: #000000;
+    padding: 1rem;
+    border-radius: 0.2rem;
+}
+
+.table-row__content p {
+    margin-top: 0.25rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.filter-button,
+.edit-button,
+.delete-button {
+    width: 2rem;
+    height: 2rem;
+    fill: #000;
+}
+
+.table-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.625rem;
+    background-color: #ce5454;
+}
+
+.table-pagination-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+}
+
+.table-pagination-total span {
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.table-pagination-pages {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.table-pagination-page button {
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    background-color: transparent;
+    border: none;
+    border-radius: 0.125rem;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+}
+
+.table-pagination-page button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 0.125rem;
+}
+
+.table-pagination-page.active button {
+    background-color: rgba(0, 0, 0, 0.2);
+    font-weight: 700;
+    border-radius: 0.125rem;
+}
+
+.table-pagination-ellipsis span {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-size: 14px;
+}

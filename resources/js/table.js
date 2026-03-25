@@ -15,6 +15,8 @@ if (tableContainer) {
         }
     })
 
+
+
     tableContainer.addEventListener('click', async (event) => {
 
         if (event.target.closest('.edit-button')) {

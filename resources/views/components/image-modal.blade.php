@@ -24,7 +24,20 @@
 
         <div class="image-modal__tab-content" data-modal-tab="gallery">
             <div class="image-modal__gallery" id="modalGallery">
-                <p class="image-modal__gallery-empty">No hay imágenes disponibles.</p>
+                <p class="image-modal__gallery-empty">No hay imagenes en la galeria</p>
+            </div>
+
+            <div class="image-modal__metadata" id="metadata-fields">
+                <div class="metadata-grid">
+                    <div class="metadata-group">
+                        <label for="modal-img-alt">ALT</label>
+                        <input type="text" id="modal-img-alt">
+                    </div>
+                    <div class="metadata-group">
+                        <label for="modal-img-title">TITLE</label>
+                        <input type="text" id="modal-img-title">
+                    </div>
+                </div>
             </div>
 
             <div class="actions">

@@ -8,6 +8,7 @@ use App\Models\MongoDB\Movie;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\MovieRequest;
 use App\Services\SitemapService;
+use App\Events\MovieStored;
 
 class MovieController extends Controller
 {
@@ -75,13 +76,14 @@ class MovieController extends Controller
                 $data
             );
 
-            foreach ($movie->locale as $language => $fields) {
-                $slugs = [
-                    'title' => $fields['title']
-                ];
-
-                $this->sitemapService->updateOrCreateSlug('movies', $movie->_id, $language, 'movie', $slugs);
-            }
+            \Debugbar::info($request->input('images'));
+            
+            MovieStored::dispatch(
+               $movie,
+               $request->filled('images')
+                   ? $request->input('images')
+                   : []
+            );
 
             $movies = $this->movie
                 ->orderBy('created_at', 'desc')

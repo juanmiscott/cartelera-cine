@@ -23,24 +23,38 @@ if (formContainer) {
             const form = document.querySelector('.form form');
             const formData = new FormData(form);
 
-            const images = [];
-            const uploadImageContainers = document.querySelectorAll('.upload-image-container');
+            if (formContainer.querySelector('.upload-image-container')) {
+                const images = []
+                const uploadImageContainers = formContainer.querySelectorAll('.upload-image-container')
 
-            uploadImageContainers.forEach(container => {
-                const img = container.querySelector('img');
-                if (img && img.getAttribute('src')) {
-                    images.push({
-                        name: container.dataset.name,
-                        languageAlias: container.dataset.language,
-                        imageConfigurations: JSON.parse(container.dataset.configuration || '{}'),
-                        filename: img.getAttribute('src').split('/').pop(),
-                        alt: img.getAttribute('alt'),
-                        title: img.getAttribute('title')
-                    });
+                uploadImageContainers.forEach(uploadImageContainer => {
+                    const image = {
+                        name: uploadImageContainer.dataset.name,
+                        languageAlias: uploadImageContainer.dataset.language,
+                        imageConfigurations: JSON.parse(uploadImageContainer.dataset.configuration),
+                        files: []
+                    }
+
+                    uploadImageContainer.querySelectorAll('img').forEach(img => {
+                        if (img.getAttribute('src')) {
+                            image.files.push({
+                                filename: img.getAttribute('src').split('/').pop(),
+                                alt: img.getAttribute('alt'),
+                                title: img.getAttribute('title')
+                            })
+                        }
+                    })
+
+                    if (image.files.length > 0) {
+                        images.push(image)
+                    }
+                })
+
+                if (images.length > 0) {
+                    formData.append('images', JSON.stringify(images))
                 }
-            });
+            }
 
-            formData.append('images', JSON.stringify(images));
             let endpoint = panel.dataset.storeUrl;
 
             try {
@@ -80,9 +94,33 @@ if (formContainer) {
             store.dispatch(setForm(result.form));
         }
 
+        if (event.target.closest('.image-button')) {
+            const uploadImageContainer = event.target.closest('.upload-image-container');
 
-        const mainTab = event.target.closest('.tabs--main .tab');
-        if (mainTab) {
+            document.dispatchEvent(new CustomEvent('openImageModal', {
+                detail: {
+                    uploadImageContainer
+                }
+            }));
+        }
+
+        if (event.target.closest('.delete-image-button')) {
+            const button = event.target.closest('.delete-image-button');
+            const imageContainer = button.parentElement;
+            const wrapper = imageContainer.parentElement;
+
+            if (!imageContainer.classList.contains('hidden')) {
+                imageContainer.remove();
+            }
+
+            if (wrapper.classList.contains('single')) {
+                const addBtn = wrapper.querySelector('.image-button');
+                if (addBtn) addBtn.classList.remove('hidden');
+            }
+        }
+
+        if (event.target.closest('.tabs--main .tab')) {
+            const mainTab = event.target.closest('.tabs--main .tab')
             const selected = mainTab.dataset.tab;
 
             formContainer.querySelectorAll('.tabs--main .tab').forEach(t => t.classList.remove('active'));
@@ -94,21 +132,19 @@ if (formContainer) {
             return;
         }
 
-        const langTab = event.target.closest('.tabs--lang .tab-lang');
-        if (langTab) {
-            const selected = langTab.dataset.lang;
+
+        if (event.target.closest('.tabs--lang .tab-lang')) {
+            const currentTab = event.target.closest('.tabs--lang .tab-lang');
+            const selected = currentTab.dataset.lang;
 
             formContainer.querySelectorAll('.tabs--lang .tab-lang').forEach(t => t.classList.remove('active'));
-            langTab.classList.add('active');
+
+            currentTab.classList.add('active');
 
             formContainer.querySelectorAll('.tab-lang-content').forEach(c => {
                 c.classList.toggle('active', c.dataset.lang === selected);
             });
             return;
         }
-
-
-
-
     });
 }

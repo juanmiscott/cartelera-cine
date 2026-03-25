@@ -1,0 +1,157 @@
+.form__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.form__header {
+    background-color: #ce5454;
+}
+
+.form__header-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form__header-icons {
+    display: flex;
+    gap: 0.625rem;
+    margin-right: 0.25rem;
+}
+
+.clean-icon svg,
+.save-icon svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+.form-element {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin: 0.625rem 0;
+}
+
+.form-title {
+    margin-bottom: 0.5rem;
+}
+
+.form-title span {
+    font-weight: 500;
+    color: #4b5563;
+}
+
+.form-element-input input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: none;
+    color: #000;
+    background: hsl(231, 100%, 99%);
+}
+
+.form-element-input input.error {
+    border: 1px solid #dc2626;
+}
+
+.error-message {
+    color: #dc2626;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.tab-content {
+    display: none;
+    color: #ffffff;
+}
+
+.tab-content.active {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.tabs--main {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 4px;
+    align-items: flex-end;
+}
+
+.tabs--main .tab {
+    display: block !important;
+}
+
+.tabs--main .tab button {
+    display: block;
+    padding: 8px 20px;
+    border: none;
+    background: #571c1c;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 4px 4px 0 0;
+}
+
+.tabs--main .tab.active button {
+    background: #571c1c;
+    color: #fff;
+    font-weight: 600;
+}
+
+.tabs--lang {
+    display: flex;
+    flex-direction: row !important;
+    gap: 4px;
+    margin-top: 24px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.tabs--lang .tab-lang {
+    display: block !important;
+}
+
+.tabs--lang .tab-lang button {
+    padding: 6px 16px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.tabs--lang .tab-lang.active button {
+    color: #fff;
+    font-weight: 600;
+    border-bottom: 2px solid #fff;
+    margin-bottom: -2px;
+}
+
+.tab-lang-content {
+    display: none;
+}
+
+.tab-lang-content.active {
+    display: block;
+}
+
+.tab {
+    background-color: #571c1c;
+    padding: 0 0.625rem;
+    line-height: 2rem;
+    color: #eebdbd;
+    cursor: pointer;
+}
+
+.tab button {
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 0.25rem;
+}
+
+.tab-active button {
+    color: #ffffff;
+}

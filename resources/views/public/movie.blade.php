@@ -11,6 +11,12 @@
 </head>
 <body>
 
+
+@php
+  $locale = app()->getLocale();
+@endphp
+
+
 <div class="movie-detail-page">
 
 <div class="cartelera-header">

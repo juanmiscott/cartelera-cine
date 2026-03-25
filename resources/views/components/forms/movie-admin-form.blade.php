@@ -102,25 +102,64 @@
         @endforeach
       </div>
 
-
-<div class="tab-content" data-tab="imagenes">
-    <div class="form-element">
-        <div class="form-title"><span>Galería de la Película</span></div>
-        
-        <div class="image-grid-peli" id="peli-image-grid">
+      <div class="tab-content" data-tab="imagenes">
+        <div class="form-element">
+          <div class="form-title"><span>Poster de la Pelicula</span></div>
+          
+          <div class="upload-image-container single" data-quantity="single" data-name="poster" data-language="es" data-configuration="{{ json_encode(['thumbnail' => 
+          ['widthPx' => '100', 'heightPx' => '100'], 'xs' => 
+          ['widthPx' => '200', 'heightPx' => '200'], 'sm' => 
+          ['widthPx' => '200', 'heightPx' => '200'], 'md' => 
+          ['widthPx' => '450', 'heightPx' => '450'], 'lg' => 
+          ['widthPx' => '450', 'heightPx' => '450']]) }}">
             
-            <button type="button" class="image-button add-image-card">
-                <div class="add-image-content">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                    </svg>
-                    <span>Añadir Imagen</span>
-                </div>
-            </button>
+            <div class="image-grid-wrapper">
+              <x-image-preview :record="$record" type="poster" />
 
+              <button type="button" class="image-button add-image-card">
+                <div class="add-image-content">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                  <span>Añadir Imagen</span>
+                </div>
+              </button>
             </div>
-    </div>
-</div>
+
+            <div class="upload-image hidden">
+              <img src="" alt="" title="">
+              <button type="button" class="delete-image-button">×</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-element">
+          <div class="form-title"><span>Galeria de la Pelicula</span></div>
+          
+          <div class="upload-image-container multiple" data-quantity="multiple" data-name="gallery" data-language="es" data-configuration="{{ json_encode(['thumbnail' =>
+          ['widthPx' => '100', 'heightPx' => '100'], 'xs' => 
+          ['widthPx' => '200', 'heightPx' => '200'], 'sm' => 
+          ['widthPx' => '200', 'heightPx' => '200'], 'md' => 
+          ['widthPx' => '450', 'heightPx' => '450'], 'lg' => 
+          ['widthPx' => '450', 'heightPx' => '450']]) }}">
+            
+            <div class="image-grid-wrapper">
+              <x-image-preview :record="$record" type="gallery" />
+
+              <button type="button" class="image-button add-image-card">
+                <div class="add-image-content">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                  <span>Añadir Imagen</span>
+                </div>
+              </button>
+            </div>
+
+            <div class="upload-image hidden">
+              <img src="" alt="" title="">
+              <button type="button" class="delete-image-button">×</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </form>
   </div>
 

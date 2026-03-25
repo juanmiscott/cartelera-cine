@@ -16,6 +16,16 @@ class MovieRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+      if ($this->has('images') && is_string($this->images)) {
+        $this->merge([
+          'images' => json_decode($this->images, true),
+        ]);
+      }
+    }
+
+
     public function rules()
     {
         return [
@@ -27,6 +37,10 @@ class MovieRequest extends FormRequest
             'locale.es.description' => 'string',
             'locale.en.title' => 'required',
             'locale.en.description' => 'string',
+            'images' => 'nullable|array',
+            'images.*.title' => 'nullable|string',
+            'images.*.alt' => 'nullable|string',
+            'images.*.filename' => 'nullable|string',   
         ];
     }
 

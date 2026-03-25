@@ -1,0 +1,233 @@
+.cartelera-page {
+    min-height: 100vh;
+    background-color: #111111;
+    padding: 0;
+}
+
+.cartelera-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2rem;
+    background-color: #111111;
+    border-bottom: 1px solid #222;
+}
+
+.cartelera-header__title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+}
+
+.cartelera-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: #666;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+.cartelera-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    padding: 1.5rem 2rem;
+}
+
+@media (min-width: 640px) {
+    .cartelera-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .cartelera-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+.movie-card {
+    position: relative;
+    border-radius: 0.4rem;
+    overflow: hidden;
+    aspect-ratio: 2 / 3;
+    background-color: #222;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.movie-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.movie-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.movie-card__badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #ce2020;
+    color: #ffffff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.5rem;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 10% 100%);
+    z-index: 2;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.menu-button svg {
+    width: 1.75rem;
+    height: 1.75rem;
+    fill: #ffffff;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 280px;
+    height: 100vh;
+    background-color: #3b2020;
+    z-index: 1000;
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar.is-open {
+    right: 0;
+}
+
+.sidebar__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    background-color: #5f3b3b;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.sidebar__close {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 1.75rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.sidebar__nav {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+}
+
+.sidebar__link {
+    padding: 0.9rem 1.5rem;
+    color: #f5d5d5;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    border-left: 3px solid transparent;
+}
+
+.sidebar__link:hover {
+    background-color: #5f3b3b;
+    border-left-color: #ce5454;
+    color: #ffffff;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.sidebar-overlay.is-visible {
+    display: block;
+}
+
+.logout-button {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.625rem;
+    background-color: #944d4d;
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.2rem;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.faqs {
+    max-width: 800px;
+    margin: 60px auto 100px auto;
+    padding: 0 20px;
+    border-top: 1px solid #2a2a2a;
+    padding-top: 60px;
+}
+
+.faqs__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.faqs__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.faqs__item {
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 20px 24px;
+    transition: border-color 0.2s ease;
+}
+
+.faqs__item:hover {
+    border-color: #c0392b;
+}
+
+.faqs__question {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.faqs__answer {
+    font-size: 0.9rem;
+    color: #aaa;
+    line-height: 1.6;
+}

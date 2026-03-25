@@ -5,8 +5,17 @@ if (imageModal) {
     const gallery = imageModal.querySelector('#modalGallery');
     const preview = imageModal.querySelector('#imagePreview');
     const confirmBtn = imageModal.querySelector('.confirm-button');
+    const metadataFields = imageModal.querySelector('#metadata-fields');
+    const modalImgAlt = imageModal.querySelector('#modal-img-alt');
+    const modalImgTitle = imageModal.querySelector('#modal-img-title');
 
     let currentUploadContainer = null;
+
+    document.addEventListener('openImageModal', (event) => {
+        currentUploadContainer = event.detail.uploadImageContainer;
+        imageModal.classList.add('active');
+        updateConfirmButton();
+    });
 
     function updateConfirmButton () {
         if (!gallery || !confirmBtn) return;
@@ -21,15 +30,6 @@ if (imageModal) {
             confirmBtn.style.cursor = "not-allowed";
         }
     }
-
-    document.addEventListener('click', e => {
-        const btn = e.target.closest('.image-button');
-        if (btn) {
-            currentUploadContainer = btn.closest('.upload-image-container');
-            imageModal.classList.add('active');
-            updateConfirmButton();
-        }
-    });
 
     fileInput?.addEventListener('change', async (event) => {
         const file = event.target.files[0];
@@ -50,21 +50,23 @@ if (imageModal) {
             if (response.ok) {
                 gallery.innerHTML = data.imageGallery;
                 fileInput.value = '';
-                preview.style.display = 'none';
+                if (preview) preview.style.display = 'none';
             }
         } catch (error) {
             alert("Error de conexión");
         }
     });
 
-    const grid = document.getElementById('peli-image-grid');
-
     imageModal.addEventListener('click', async e => {
         const target = e.target;
 
-        if (target === imageModal || target.closest('.cancel-button')) {
-            imageModal.classList.remove('active');
-            currentUploadContainer = null;
+        const item = target.closest('.image-modal__gallery-item');
+        if (item && !target.closest('.btn-delete-image')) {
+            gallery.querySelectorAll('.image-modal__gallery-item').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+
+            if (metadataFields) metadataFields.style.display = 'block';
+            updateConfirmButton();
             return;
         }
 
@@ -88,18 +90,10 @@ if (imageModal) {
             return;
         }
 
-        const item = target.closest('.image-modal__gallery-item');
-        if (item && !target.closest('.btn-delete-image')) {
-            gallery.querySelectorAll('.image-modal__gallery-item').forEach(i => i.classList.remove('selected'));
-            item.classList.add('selected');
-            updateConfirmButton();
-            return;
-        }
-
         const deleteBtn = target.closest('.btn-delete-image');
         if (deleteBtn) {
             e.stopPropagation();
-            if (!confirm('¿Deseas eliminar la imagen?')) return;
+            if (!confirm('¿Deseas eliminar la imagen permanentemente?')) return;
             try {
                 const response = await fetch(deleteBtn.dataset.endpoint, {
                     method: 'DELETE',
@@ -114,39 +108,41 @@ if (imageModal) {
             return;
         }
 
-        if (target.closest('.confirm-button')) {
+        if (e.target.closest('.confirm-button')) {
             const selectedItem = gallery.querySelector('.image-modal__gallery-item.selected');
-            const grid = document.getElementById('peli-image-grid');
 
-            if (selectedItem && grid) {
+            if (selectedItem) {
                 const src = selectedItem.querySelector('img').src;
-                const title = document.getElementById('modal-img-title')?.value || '';
-                const alt = document.getElementById('modal-img-alt')?.value || '';
 
-                const newImage = document.createElement('div');
-                newImage.className = 'upload-image-container';
+                if (currentUploadContainer.dataset.quantity === 'single') {
+                    currentUploadContainer.querySelector('.upload-image').classList.remove('hidden');
+                    currentUploadContainer.querySelector('img').src = src;
+                    currentUploadContainer.querySelector('img').alt = modalImgAlt.value;
+                    currentUploadContainer.querySelector('img').title = modalImgTitle.value;
+                } else {
+                    const clone = currentUploadContainer.querySelector('.upload-image').cloneNode(true);
+                    clone.classList.remove('hidden');
+                    clone.querySelector('img').src = src;
+                    clone.querySelector('img').alt = modalImgAlt.value;
+                    clone.querySelector('img').title = modalImgTitle.value;
+                    currentUploadContainer.appendChild(clone);
+                }
 
-                newImage.dataset.name = "gallery";
-                newImage.dataset.language = "es";
-                newImage.dataset.configuration = JSON.stringify({ width: 800, height: 600 });
-
-                newImage.innerHTML = `
-            <img src="${src}" alt="${alt}" title="${title}">
-            <button type="button" class="delete-button-preview">
-                <svg viewBox="0 0 24 24" style="width: 16px; fill: white;"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
-            </button>
-        `;
-
-                grid.appendChild(newImage);
-
-                imageModal.classList.remove('active');
+                closeAndResetModal();
             }
         }
 
-        document.addEventListener('click', e => {
-            if (e.target.closest('.delete-button-preview')) {
-                e.target.closest('.upload-image-container').remove();
-            }
-        });
+        if (target === imageModal || target.closest('.cancel-button') || target.closest('.close-modal')) {
+            closeAndResetModal();
+        }
     });
+
+    function closeAndResetModal () {
+        imageModal.classList.remove('active');
+        if (metadataFields) metadataFields.style.display = 'none';
+        modalImgAlt.value = '';
+        modalImgTitle.value = '';
+        gallery.querySelectorAll('.image-modal__gallery-item').forEach(i => i.classList.remove('selected'));
+        updateConfirmButton();
+    }
 }

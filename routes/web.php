@@ -63,49 +63,23 @@ Route::group(['prefix' => 'admin' , 'middleware' => 'auth:web' ], function () {
     ]
   ]);
 
-  Route::resource('salas', 'App\Http\Controllers\Admin\RoomController', [
+    Route::resource('faqs', 'App\Http\Controllers\Admin\FaqController', [
     'parameters' => [
-      'salas' => 'room',
+      'faqs' => 'faq',
     ],
     'names' => [
-      'index' => 'rooms',
-      'create' => 'rooms_create',
-      'edit' => 'rooms_edit',
-      'store' => 'rooms_store',
-      'destroy' => 'rooms_destroy',
-      'update' => 'rooms_update',
+      'index' => 'faqs',
+      'create' => 'faqs_create',
+      'edit' => 'faqs_edit',
+      'store' => 'faqs_store',
+      'destroy' => 'faqs_destroy',
+      'update' => 'faqs_update',
     ]
   ]);
 
 
 
-  Route::resource('asientos', 'App\Http\Controllers\Admin\SeatController', [
-    'parameters' => [
-      'asientos' => 'seat',
-    ],
-    'names' => [
-      'index' => 'seats',
-      'create' => 'seats_create',
-      'edit' => 'seats_edit',
-      'store' => 'seats_store',
-      'destroy' => 'seats_destroy',
-      'update' => 'seats_update',
-    ]
-  ]);
-
-  Route::resource('tickets', 'App\Http\Controllers\Admin\TicketController', [
-    'parameters' => [
-        'tickets' => 'ticket',
-    ],
-    'names' => [
-        'index' => 'tickets',
-        'create' => 'tickets_create',
-        'edit' => 'tickets_edit',
-        'store' => 'tickets_store',
-        'destroy' => 'tickets_destroy',
-        'update' => 'tickets_update',
-    ]
-  ]);
+ 
 });
 
 Route::group(['prefix' => 'cuenta' , 'middleware' => 'auth:customer'], function () { 
@@ -123,6 +97,7 @@ Route::group(['middleware' => 'getSitemap'], function () {
 });
 
 Route::post('/language', 'App\Http\Controllers\Public\LanguageController@changeLanguage')->name('language.change');
+Route::get('/images/{entity}/{entityId}/{filename}', 'App\Http\Controllers\Public\ImageController@showImage')->name('image');
 
 Route::get('/', function () {})->middleware('setLocale');
 

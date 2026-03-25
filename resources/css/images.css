@@ -1,0 +1,376 @@
+.image-modal {
+    background: #3b3a3a;
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+    width: 900px;
+    height: 700px;
+    max-width: 95vw;
+    max-height: 90vh;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Tabs del modal */
+.image-modal__tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.image-modal__tab {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+}
+
+.image-modal__tab.active,
+.image-modal__tab:hover {
+    color: #fff;
+    border-bottom-color: #e05c6a;
+}
+
+.image-modal__tab-content {
+    display: none;
+}
+
+.image-modal__tab-content.active {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.image-modal__tab-content[data-modal-tab="gallery"] {
+    justify-content: flex-start;
+}
+
+/* Área de subida */
+.image-modal__upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 20px;
+}
+
+.image-modal__upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 600px;
+    height: 300px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.03);
+    transition: all 0.3s ease;
+}
+
+.image-modal__upload-label:hover {
+    background: rgba(224, 92, 106, 0.05);
+    border-color: #e05c6a;
+}
+
+.image-modal__upload-label svg {
+    width: 36px;
+    height: 36px;
+    fill: currentColor;
+}
+
+.image-modal__upload-label input[type="file"] {
+    display: none;
+}
+
+/* Preview */
+.image-modal__preview {
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.image-modal__preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 400px;
+    object-fit: contain;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Galería */
+.image-modal__gallery {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    padding: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.image-modal__gallery-empty {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 13px;
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 32px 0;
+}
+
+.image-modal__gallery-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.image-modal__gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.image-modal__gallery-item.selected {
+    border: 3px solid rgb(201, 106, 106) !important;
+    border-radius: 8px;
+}
+
+.image-modal__gallery-item:hover {
+    border-color: #e05c6a;
+}
+
+/* Botón eliminar en galería */
+.btn-delete-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #e05c6a;
+    border: none;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+    z-index: 20;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.image-modal__gallery-item:hover .btn-delete-image {
+    opacity: 1;
+}
+
+.btn-delete-image svg {
+    width: 18px;
+    height: 18px;
+    fill: white;
+}
+
+.btn-delete-image:hover {
+    background: #c0392b;
+    transform: scale(1.1);
+}
+
+/* Metadata */
+.image-modal__metadata {
+    display: none;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    margin: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metadata-instruction {
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.metadata-grid {
+    display: flex;
+    gap: 15px;
+}
+
+.metadata-group {
+    flex: 1;
+}
+
+.metadata-group label {
+    display: block;
+    color: #eee;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.metadata-group input {
+    width: 100%;
+    padding: 10px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+/* Contenedor de imágenes en el formulario */
+.upload-image-container {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    border-radius: 8px;
+    width: auto;
+    overflow: visible;
+}
+
+.upload-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+.upload-image {
+    width: 135px;
+    height: 135px;
+    position: relative;
+}
+
+.upload-image.hidden {
+    display: none;
+}
+
+.upload-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.multiple .upload-image {
+    position: relative;
+}
+
+/* Botón añadir imagen */
+.add-image-card {
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    border: 2px solid #b4282873;
+    border-radius: 12px;
+    background: #5a1414cc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.3s ease;
+    width: 135px;
+    height: 135px;
+    flex-shrink: 0;
+}
+
+.single .add-image-card {
+    position: absolute;
+}
+
+.multiple .add-image-card {
+    position: relative;
+}
+
+.add-image-card:hover {
+    background: #5a1414cc;
+    border-color: rgba(220, 60, 60, 0.7);
+    transform: translateY(-2px);
+}
+
+.add-image-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: white;
+}
+
+.add-image-content svg {
+    width: 35px;
+    height: 35px;
+    fill: rgba(220, 80, 80, 0.9);
+}
+
+.add-image-content span {
+    color: rgba(220, 100, 100, 0.95);
+}
+
+/* Botón eliminar en preview del formulario */
+.delete-image-button {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e05c6a;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.delete-button-preview {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #e05c6a;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.image-button.hidden {
+    display: none;
+}
+
+.image-grid-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0;
+}
