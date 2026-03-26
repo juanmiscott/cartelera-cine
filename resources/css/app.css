@@ -3,6 +3,7 @@
 @import './modals.css';
 @import './publics.css';
 @import './images.css';
+@import './filters.css';
 
 
 * {
@@ -118,37 +119,6 @@ img {
     height: 2rem;
     fill: #000;
 }
-
-
-
-
-.filter-cancel-button {
-    background: rgb(247, 247, 247);
-    color: rgb(41, 15, 15);
-    border-radius: 0.375rem;
-    padding: 0.625rem 1.25rem;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.filter-cancel-button:hover {
-    background: rgb(243, 120, 120);
-}
-
-.filter-apply-button {
-    background: rgb(43, 11, 11);
-    color: white;
-    border-radius: 0.375rem;
-    padding: 0.625rem 1.25rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.filter-apply-button:hover {
-    background: rgb(105, 22, 22);
-}
-
 
 .login-page {
     min-height: 100vh;
@@ -578,167 +548,6 @@ img {
 
 
 }
-
-.modal--filter .modal__header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.modal--filter .modal__header__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: #f5f5f5;
-    border-radius: 8px;
-    flex-shrink: 0;
-}
-
-.modal--filter .modal__header__icon svg {
-    width: 16px;
-    height: 16px;
-    fill: #333;
-}
-
-.modal--filter .modal__title {
-    flex: 1;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #111;
-    margin: 0;
-}
-
-.modal--filter .modal__close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: none;
-    background: transparent;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #888;
-    transition: background 0.15s, color 0.15s;
-    flex-shrink: 0;
-}
-
-.modal--filter .modal__close:hover {
-    color: #111;
-}
-
-.modal--filter .modal__close svg {
-    width: 25px;
-    height: 25px;
-    color: #fff;
-}
-
-.modal--filter .modal__form {
-    padding: 1.25rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-height: 60vh;
-    overflow-y: auto;
-}
-
-.form__group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-.form__label {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #555;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.form__input {
-    width: 100%;
-    padding: 0.55rem 0.75rem;
-    border: 1.5px solid #e5e5e5;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: #111;
-    background: #fafafa;
-    outline: none;
-    transition: border-color 0.18s, background 0.18s;
-    box-sizing: border-box;
-}
-
-.form__input:focus {
-    border-color: #111;
-    background: #fff;
-}
-
-.form__range-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.form__input--half {
-    width: 0;
-    flex: 1;
-}
-
-.form__range-sep {
-    color: #bbb;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-}
-
-.form__select-wrapper {
-    position: relative;
-}
-
-.form__select {
-    width: 100%;
-    padding: 0.55rem 2.25rem 0.55rem 0.75rem;
-    border: 1.5px solid #e5e5e5;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: #111;
-    background: #fafafa;
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
-    cursor: pointer;
-    transition: border-color 0.18s, background 0.18s;
-    box-sizing: border-box;
-}
-
-.form__select:focus {
-    border-color: #111;
-    background: #fff;
-}
-
-.form__select-arrow {
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    color: #888;
-    pointer-events: none;
-}
-
-
-.modal--filter .modal__actions {
-    display: flex;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem 1.25rem;
-    border-top: 1px solid #f0f0f0;
-}
-
 
 .cancel-button,
 .apply-button {
